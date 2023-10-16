@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/rest"
 import { Connection } from "./config"
-import { Pull, User } from "./model"
+import { Pull, PullDetails, User } from "./model"
 
 export function createClient(connection: Connection): Octokit {
     return new Octokit({auth: connection.auth, baseUrl: connection.baseUrl})
@@ -89,4 +89,55 @@ export function getPulls(connection: Connection, search: string, user: string): 
 
     return createClient(connection).graphql<Data>(query, {search: finalSearch})
         .then(data => data.search.edges.map(edge => edge.node))
+}
+
+export function getPull(connection: Connection|undefined, owner: string|undefined, repo: string|undefined, pullNumber: number): Promise<PullDetails> {
+    if (connection === undefined || owner === undefined || repo === undefined) {
+        return Promise.reject();
+    }
+    const query = `query ($owner: String!, $repo: String!, $pullNumber: Int!) {
+        repository(owner: $owner, name: $repo) {
+            pullRequest(number: $pullNumber) {
+                number
+                title
+                author {
+                  login
+                  url
+                  avatarUrl
+                }
+                repository {
+                  nameWithOwner
+                }
+                createdAt
+                updatedAt
+                state
+                url
+                isDraft
+                closed
+                merged
+                reviewDecision
+                additions
+                deletions
+                bodyHTML
+            }
+        }
+        rateLimit {
+            limit
+            cost
+            remaining
+            resetAt
+        }
+    }`
+    type Data = {
+        repository: {
+            pullRequest: PullDetails,
+        },
+        rateLimit: RateLimit,
+    }
+
+    return createClient(connection).graphql<Data>(query, {owner, repo, pullNumber})
+        .then(data => {
+            console.log(data)
+            return data.repository.pullRequest
+        })
 }

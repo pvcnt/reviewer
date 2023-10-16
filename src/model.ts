@@ -17,6 +17,10 @@ export type Pull = {
     reviewDecision?: string,
 }
 
+export type PullDetails = Pull & {
+    bodyHTML: string,
+}
+
 export type PullList = {
     host: string,
     pulls: Pull[],

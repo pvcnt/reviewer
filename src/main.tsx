@@ -19,6 +19,8 @@ import 'normalize.css/normalize.css'
 import '@blueprintjs/icons/lib/css/blueprint-icons.css'
 import '@blueprintjs/core/lib/css/blueprint.css'
 import './styles/index.less'
+import './index.css'
+import Pull from './routes/pull.tsx'
 
 TimeAgo.addDefaultLocale(timeAgoEnLocale)
 
@@ -28,14 +30,18 @@ const router = createBrowserRouter([
         element: <App/>,
         errorElement: <ErrorPage />,
         children: [
-        {
-            index: true,
-            element: <Dashboard/>,
-        },
-        {
-            path: "/settings",
-            element: <Settings/>,
-        },
+            {
+                index: true,
+                element: <Dashboard/>,
+            },
+            {
+                path: "/settings",
+                element: <Settings/>,
+            },
+            {
+                path: "/pull/:host/:org/:repo/:pullNumber",
+                element: <Pull/>,
+            },
         ]
     },
 ])

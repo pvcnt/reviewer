@@ -43,11 +43,11 @@ type Props = {
 
 export default function Sidebar({ isDark, onDarkChange }: Props) {
   return (
-    <div className="sidebar">
-      <img src="/logo.svg" height="30" className="mt-2 mb-2"/>
+    <div className="w-16 h-screen sticky top-0 flex flex-col items-center py-2 gap-2 border border-slate-200">
+      <img src="/logo.svg" className="w-8 mt-2 mb-2"/>
       <SidebarLink link="/" title="Dashboard" icon="dashboard"/>
       <SidebarLink link="/settings" title="Settings" icon="cog"/>
-      <div className="bottom">
+      <div className="mt-auto">
         <SidebarButton
           title={"Switch to " + (isDark ? "light" : "dark") + " mode"}
           icon={isDark ? "flash" : "moon"}

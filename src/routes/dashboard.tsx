@@ -1,7 +1,9 @@
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { useContext, useEffect, useState } from "react";
 import { Section, emptySectionConfig, ConfigContext } from "../config";
 import DashboardSection from "../components/DashboardSection";
-import { Button, InputGroup } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 import SectionDialog from "../components/SectionDialog";
 import { useQueries } from "@tanstack/react-query";
 import { getPulls, getViewer } from "../github";
@@ -75,8 +77,8 @@ export default function Dashboard() {
     return (
         <>
             <div className="flex w-full">
-                <InputGroup leftIcon="search" placeholder="Search pull requests" round className="grow" value={search} onChange={e => setSearch(e.target.value)} />
-                <Button text="New section" icon="plus" onClick={() => setEditing(true)} className="ml-4"/>
+                <Input placeholder="Search pull requests" className="grow" value={search} onChange={e => setSearch(e.target.value)} />
+                <Button onClick={() => setEditing(true)} className="w-max ml-4"><Icon icon="plus"/> New section</Button>
             </div>
             <SectionDialog
                 section={emptySectionConfig}
